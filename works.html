@@ -40,6 +40,7 @@
         max-width: 80%; /* 最大宽度为容器宽度的90% */
         padding: 20px; /* 添加内边距 */
         box-sizing: border-box; /* 包括padding在内的宽度计算 */
+
       }
       .pswp__dynamic-caption {
         color: #fff;
@@ -54,6 +55,11 @@
         height: auto;
         max-height: 250px;
         aspect-ratio: attr(width) / attr(height); /* 保持原图的宽高比例 */
+        border: 3px solid transparent; /* 默认无边框 */
+        transition: border-color 0.3s ease; /* 增加平滑的过渡效果 */
+      }
+      .thumbnail.hover-frame:hover {
+        border-color: white; /* 鼠标悬停时显示白色边框 */
       }
       .image-caption {
           width: 100%; /* 小DIV的宽度 */
@@ -75,7 +81,7 @@
           data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
           data-pswp-max-width="2709"
           data-pswp-max-height="3744">
-          <img src="https://ia600400.us.archive.org/12/items/kwc_kilon_works_catalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo1.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail" />
+          <img src="https://ia600400.us.archive.org/12/items/kwc_kilon_works_catalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo1.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
         </a>
         <div class="pswp-caption-content">
           <b>KWCo1 (2022)</b>
@@ -83,6 +89,7 @@
           <br>31.5 x 47.2 inch
           <br><br>Titles:
           <br>Cooped in the Ivory Tower
+          <br><br><span style="color: #a9a9a9;">"Big Brother is watching you..."</span>
           <br><br><em class='text-muted'>© Kilon</em>
         </div>
         <div class="image-caption">KWCo1</div>
@@ -98,7 +105,7 @@
           data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
           data-pswp-max-width="2871"
           data-pswp-max-height="3451">
-          <img src="https://ia600400.us.archive.org/12/items/kwc_kilon_works_catalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo2.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail" />
+          <img src="https://ia600400.us.archive.org/12/items/kwc_kilon_works_catalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo2.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
         </a>
         <div class="pswp-caption-content">
           <b>KWCo2 (2022)</b>
@@ -106,6 +113,31 @@
           <br>19.7 x 23.6 inch
           <br><br>Titles:
           <br>Birdy
+          <br><br><span style="color: #a9a9a9;">"But some people still have to pay the price of their lives for the Pride Rainbow!"</span>
+          <br><br><em class='text-muted'>© Kilon</em>
+        </div>
+        <div class="image-caption">KWCo2</div>
+      </div>
+
+      <div class="pswp-gallery__item">
+        <a  
+          href="https://ia800400.us.archive.org/12/items/kwc_kilon_works_catalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo3.jpg" 
+          target="_blank"
+          data-pswp-width="4000"
+          data-pswp-height="2979"
+          data-pswp-tile-type="deepzoom"
+          data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
+          data-pswp-max-width="4000"
+          data-pswp-max-height="2979">
+          <img src="https://ia800400.us.archive.org/12/items/kwc_kilon_works_catalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo3.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+        </a>
+        <div class="pswp-caption-content">
+          <b>KWCo2 (2022)</b>
+          <br>oil on flax
+          <br>19.7 x 23.6 inch
+          <br><br>Titles:
+          <br>Birdy
+          <br><br><span style="color: #a9a9a9;">"But some people still have to pay the price of their lives for the Pride Rainbow!"</span>
           <br><br><em class='text-muted'>© Kilon</em>
         </div>
         <div class="image-caption">KWCo2</div>
