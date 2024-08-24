@@ -5,8 +5,22 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.3.0/dist/photoswipe.css">
     <link rel="stylesheet" href="./photoswipe-dynamic-caption-plugin.css">
 
-    <!-- demo styles, ignore em-->
     <style>
+      /* 缩放动画 */
+      @keyframes zoomIn {
+        from {
+          transform: scale(0);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      /* 应用动画 */
+      .zoom-in {
+        animation: zoomIn 0.8s forwards;
+      }
       body {
         margin: 0;
         padding: 0;
@@ -26,6 +40,11 @@
         place-items: center; /* 水平和垂直居中对齐 */
         text-align: center; /* 使标题文字居中 */
         grid-template-rows: 1fr auto; /* 上面为可伸缩，下面为小DIV */
+        border-top: 1px solid gray; /* 顶部边框 */
+        border-bottom: 1px solid gray; /* 底部边框 */
+        padding: 30px 10px 0px 10px; /* 内边距 */
+        opacity: 0;
+        transition: opacity 0.3s;
       }
       .pswp-gallery__item img {
         width: 100%;
@@ -34,13 +53,12 @@
       }
       .pswp-gallery {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 自动调整列宽 */
-        gap: 20px; /* 控制图片间距的大小 */
+        grid-template-columns: repeat(auto-fill, minmax(225px, 1fr)); /* 自动调整列宽 */
+        gap: 30px; /* 控制图片间距的大小 */
         margin: 0 auto; /* 居中对齐 */
-        max-width: 80%; /* 最大宽度为容器宽度的90% */
+        max-width: 60%; /* 最大宽度为容器宽度的80% */
         padding: 20px; /* 添加内边距 */
         box-sizing: border-box; /* 包括padding在内的宽度计算 */
-
       }
       .pswp__dynamic-caption {
         color: #fff;
@@ -51,141 +69,294 @@
         text-decoration: underline;
       }
       .thumbnail{
-        width: auto;
-        height: auto;
-        max-height: 250px;
+        width: 100%;
+        height: auto; 
+        max-height: 400px;
         aspect-ratio: attr(width) / attr(height); /* 保持原图的宽高比例 */
-        border: 3px solid transparent; /* 默认无边框 */
-        transition: border-color 0.3s ease; /* 增加平滑的过渡效果 */
+        transition: box-shadow 0.3s ease, outline-offset 0.3s ease;
       }
       .thumbnail.hover-frame:hover {
-        border-color: white; /* 鼠标悬停时显示白色边框 */
+        box-shadow: 0 0 0 2px white; /* 悬停时显示3px的白色阴影 */
+        outline: 4px solid white; /* 设置白色轮廓线，宽度为3px */
+        outline-offset: 4px; /* 轮廓线的偏移量，让它居中 */
       }
       .image-caption {
-          width: 100%; /* 小DIV的宽度 */
-          font-size: 10px;
-          color: #888888;
+        width: 100%; /* 小DIV的宽度 */
+        font-size: 12px;
+        color: #888888;
+        text-align: center; /* 使字幕居中对齐 */
+        padding-top: 10px; /* 上边距 */
       }
+      .button-group {
+        margin: 20px auto;
+        text-align: center;
+      }
+      .button {
+          width: 100px;
+          height: 30px;
+          color: white; /* 默认文本颜色 */
+          background-color: rgb(63, 63, 63); /* 默认背景为灰色 */
+          -webkit-mask-image: url('./img/brush-stroke.png'); /* 使用笔刷图像作为蒙版 */
+          mask-image: url('./img/brush-stroke.png');
+          mask-size: cover;
+          mask-position: center;
+          border: none;
+          outline: none;
+          cursor: pointer;
+          font-size: 14px; /* 调整字体大小以适应按钮尺寸 */
+          transition: all 0.3s ease-in-out;
+          display: inline-block;
+          text-align: center;
+          line-height: 30px; /* 行高调整为与按钮高度一致 */
+          background-blend-mode: multiply; /* 确保蒙版区域颜色正确显示 */
+      }
+
+      .button:hover,
+      .button.active {
+          color: black; /* 悬停时文本颜色变黑 */
+          background-color: rgb(210, 210, 210); /* 背景颜色为白色，但只在蒙版区域显示 */
+          -webkit-mask-image: url('./img/brush-stroke.png'); /* 保持相同的蒙版 */
+          mask-image: url('./img/brush-stroke.png');
+      }
+      .hidden {
+        display: none;
+      }
+      
     </style>
   </head>
   <body>
-    <h1>KWC</h1>
-    <div class="pswp-gallery" id="gallery">
-      <div class="pswp-gallery__item">
-        <a  
-          href="https://ia600400.us.archive.org/12/items/kwc_kilon_works_catalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo1.jpg" 
-          target="_blank"
-          data-pswp-width="2709"
-          data-pswp-height="3744"
-          data-pswp-tile-type="deepzoom"
-          data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
-          data-pswp-max-width="2709"
-          data-pswp-max-height="3744">
-          <img src="https://ia600400.us.archive.org/12/items/kwc_kilon_works_catalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo1.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
-        </a>
-        <div class="pswp-caption-content">
-          <b>KWCo1 (2022)</b>
-          <br>oil on flax
-          <br>31.5 x 47.2 inch
-          <br><br>Titles:
-          <br>Cooped in the Ivory Tower
-          <br><br><span style="color: #a9a9a9;">"Big Brother is watching you..."</span>
-          <br><br><em class='text-muted'>© Kilon</em>
-        </div>
-        <div class="image-caption">KWCo1</div>
-      </div>
-      
-      <div class="pswp-gallery__item">
-        <a  
-          href="https://ia600400.us.archive.org/12/items/kwc_kilon_works_catalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo2.jpg" 
-          target="_blank"
-          data-pswp-width="2871"
-          data-pswp-height="3451"
-          data-pswp-tile-type="deepzoom"
-          data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
-          data-pswp-max-width="2871"
-          data-pswp-max-height="3451">
-          <img src="https://ia600400.us.archive.org/12/items/kwc_kilon_works_catalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo2.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
-        </a>
-        <div class="pswp-caption-content">
-          <b>KWCo2 (2022)</b>
-          <br>oil on flax
-          <br>19.7 x 23.6 inch
-          <br><br>Titles:
-          <br>Birdy
-          <br><br><span style="color: #a9a9a9;">"But some people still have to pay the price of their lives for the Pride Rainbow!"</span>
-          <br><br><em class='text-muted'>© Kilon</em>
-        </div>
-        <div class="image-caption">KWCo2</div>
-      </div>
-
-      <div class="pswp-gallery__item">
-        <a  
-          href="https://ia800400.us.archive.org/12/items/kwc_kilon_works_catalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo3.jpg" 
-          target="_blank"
-          data-pswp-width="4000"
-          data-pswp-height="2979"
-          data-pswp-tile-type="deepzoom"
-          data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
-          data-pswp-max-width="4000"
-          data-pswp-max-height="2979">
-          <img src="https://ia800400.us.archive.org/12/items/kwc_kilon_works_catalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo3.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
-        </a>
-        <div class="pswp-caption-content">
-          <b>KWCo2 (2022)</b>
-          <br>oil on flax
-          <br>19.7 x 23.6 inch
-          <br><br>Titles:
-          <br>Birdy
-          <br><br><span style="color: #a9a9a9;">"But some people still have to pay the price of their lives for the Pride Rainbow!"</span>
-          <br><br><em class='text-muted'>© Kilon</em>
-        </div>
-        <div class="image-caption">KWCo2</div>
-      </div>
+    <div class="button-group filters-button-group">
+      <button class="button" data-filter="[data-category='KWCo']">KWCo</button>
+      <button class="button" data-filter="[data-category='KWCs']">KWCs</button>
+      <button class="button" data-filter="[data-category='KWCe']">KWCe</button>
     </div>
-
-    <script type="module">
-      import PhotoSwipeLightbox from './script/photoswipe-lightbox.esm.js';
-      import PhotoSwipeDynamicCaption from './script/photoswipe-dynamic-caption-plugin.esm.js';
-      import PhotoSwipe from './script/photoswipe.esm.js';
-      import PhotoSwipeDeepZoom from './script/photoswipe-deep-zoom-plugin.esm.js';
-
-      const smallScreenPadding = {
-        top: 0, bottom: 0, left: 0, right: 0
-      };
-      const largeScreenPadding = {
-        top: 30, bottom: 30, left: 0, right: 0
-      };
-      const lightbox = new PhotoSwipeLightbox({
-        gallerySelector: '#gallery',
-        childSelector: '.pswp-gallery__item',
-        pswpModule: PhotoSwipe,
+    <div class="pswp-gallery" id="gallery">
+      <!-- #region KWCo -->	
+        <div class="pswp-gallery__item" data-category="KWCo"> <!--KWCo1-->
+          <a  
+            href="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo1.jpg" 
+            target="_blank"
+            data-pswp-width="2709"
+            data-pswp-height="3744"
+            data-pswp-tile-type="deepzoom"
+            data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
+            data-pswp-max-width="2709"
+            data-pswp-max-height="3744">
+            <img src="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCo/Thumbnail_KWCo1.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+          </a>
+          <div class="pswp-caption-content">
+            <b>KWCo1 (2022)</b>
+            <br>oil on flax
+            <br>31.5 x 47.2 inch
+            <br><br>Titles:
+            <br>Cooped in the Ivory Tower
+            <br><br><span style="color: #a9a9a9;">"Big Brother is watching you..."</span>
+            <br><br><em class='text-muted'>© Kilon</em>
+          </div>
+          <div class="image-caption">KWCo1</div>
+        </div>
         
-        // optionaly adjust viewport  
-        paddingFn: (viewportSize) => {
-          return viewportSize.x < 700 ? smallScreenPadding : largeScreenPadding
-        },
+        <div class="pswp-gallery__item" data-category="KWCo"> <!--KWCo2-->
+          <a  
+            href="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo2.jpg" 
+            target="_blank"
+            data-pswp-width="2871"
+            data-pswp-height="3451"
+            data-pswp-tile-type="deepzoom"
+            data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
+            data-pswp-max-width="2871"
+            data-pswp-max-height="3451">
+            <img src="https://ia600601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCo/Thumbnail_KWCo2.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+          </a>
+          <div class="pswp-caption-content">
+            <b>KWCo2 (2022)</b>
+            <br>oil on flax
+            <br>19.7 x 23.6 inch
+            <br><br>Titles:
+            <br>Birdy
+            <br><br><span style="color: #a9a9a9;">"But some people still have to pay the price of their lives for the Pride Rainbow!"</span>
+            <br><br><em class='text-muted'>© Kilon</em>
+          </div>
+          <div class="image-caption">KWCo2</div>
+        </div>
 
-        // Recommended PhotoSwipe options for this plugin
-        allowPanToNext: false, // prevent swiping to the next slide when image is zoomed
-        allowMouseDrag: true, // display dragging cursor at max zoom level
-        wheelToZoom: true, // enable wheel-based zoom
-        zoom: false // disable default zoom button
-      });
+        <div class="pswp-gallery__item" data-category="KWCo"> <!--KWCo3-->
+          <a  
+            href="https://ia600601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo3.jpg" 
+            target="_blank"
+            data-pswp-width="4000"
+            data-pswp-height="2979"
+            data-pswp-tile-type="deepzoom"
+            data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
+            data-pswp-max-width="4000"
+            data-pswp-max-height="2979">
+            <img src="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCo/Thumbnail_KWCo3.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+          </a>
+          <div class="pswp-caption-content">
+            <b>KWCo3 (2023)</b>
+            <br>oil on flax
+            <br> x  inch
+            <br><br>Titles:
+            <br>
+            <br><br><span style="color: #a9a9a9;"></span>
+            <br><br><em class='text-muted'>© Kilon</em>
+          </div>
+          <div class="image-caption">KWCo3</div>
+        </div> 
+      <!-- #endregion KWCo -->
 
-      const captionPlugin = new PhotoSwipeDynamicCaption(lightbox, {
-        mobileLayoutBreakpoint: 700,
-        type: 'auto',
-        mobileCaptionOverlapRatio: 1
-      });
+      <!-- #region KWCs -->	
+        <div class="pswp-gallery__item" data-category="KWCs"> <!--KWCs1-->
+          <a  
+            href="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCs/KWCs1.jpg" 
+            target="_blank"
+            data-pswp-width="3000"
+            data-pswp-height="4000"
+            data-pswp-tile-type="deepzoom"
+            data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
+            data-pswp-max-width="3000"
+            data-pswp-max-height="4000">
+            <img src="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCs/Thumbnail_KWCs1.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+          </a>
+          <div class="pswp-caption-content">
+            <b>KWCs1</b>
+            <br>
+            <br> x  inch
+            <br><br>Titles:
+            <br>
+            <br><br><span style="color: #a9a9a9;"></span>
+            <br><br><em class='text-muted'>© Kilon</em>
+          </div>
+          <div class="image-caption">KWCs1</div>
+        </div>
+        
+        <div class="pswp-gallery__item" data-category="KWCs"> <!--KWCs2-->
+          <a  
+            href="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCs/KWCs2.jpg" 
+            target="_blank"
+            data-pswp-width="3000"
+            data-pswp-height="4000"
+            data-pswp-tile-type="deepzoom"
+            data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
+            data-pswp-max-width="3000"
+            data-pswp-max-height="4000">
+            <img src="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCs/Thumbnail_KWCs2.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+          </a>
+          <div class="pswp-caption-content">
+            <b>KWCs2</b>
+            <br>
+            <br> x  inch
+            <br><br>Titles:
+            <br>
+            <br><br><span style="color: #a9a9a9;"></span>
+            <br><br><em class='text-muted'>© Kilon</em>
+          </div>
+          <div class="image-caption">KWCs2</div>
+        </div>
 
-      const deepZoomPlugin = new PhotoSwipeDeepZoom(lightbox, {
-        // deep zoom plugin options, for example:
-        tileSize: 256
-      });
+        <div class="pswp-gallery__item" data-category="KWCs"> <!--KWCs3-->
+          <a  
+            href="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCs/KWCs3.jpg" 
+            target="_blank"
+            data-pswp-width="3999"
+            data-pswp-height="3000"
+            data-pswp-tile-type="deepzoom"
+            data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
+            data-pswp-max-width="3999"
+            data-pswp-max-height="3000">
+            <img src="https://ia600601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCs/Thumbnail_KWCs3.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+          </a>
+          <div class="pswp-caption-content">
+            <b>KWCs3</b>
+            <br>
+            <br> x  inch
+            <br><br>Titles:
+            <br>
+            <br><br><span style="color: #a9a9a9;"></span>
+            <br><br><em class='text-muted'>© Kilon</em>
+          </div>
+          <div class="image-caption">KWCs3</div>
+        </div>
+      <!-- #endregion KWCs -->
 
-      lightbox.init();
-      </script>
+      <!-- #region KWCe -->	
+        <div class="pswp-gallery__item" data-category="KWCe"> <!--KWCe1-->
+          <a  
+            href="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCe/KWCe1.png" 
+            target="_blank"
+            data-pswp-width="4022"
+            data-pswp-height="2642"
+            data-pswp-tile-type="deepzoom"
+            data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
+            data-pswp-max-width="4022"
+            data-pswp-max-height="2642">
+            <img src="https://ia600601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCe/Thumbnail_KWCe1.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+          </a>
+          <div class="pswp-caption-content">
+            <b>KWCe1</b>
+            <br>
+            <br> x  inch
+            <br><br>Titles:
+            <br>
+            <br><br><span style="color: #a9a9a9;"></span>
+            <br><br><em class='text-muted'>© Kilon</em>
+          </div>
+          <div class="image-caption">KWCe1</div>
+        </div>
+        
+        <div class="pswp-gallery__item" data-category="KWCe"> <!--KWCe2-->
+          <a  
+            href="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCe/KWCe2.jpg" 
+            target="_blank"
+            data-pswp-width="2035"
+            data-pswp-height="1601"
+            data-pswp-tile-type="deepzoom"
+            data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
+            data-pswp-max-width="2035"
+            data-pswp-max-height="1601">
+            <img src="https://ia600601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCe/Thumbnail_KWCe2.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+          </a>
+          <div class="pswp-caption-content">
+            <b>KWCe2</b>
+            <br>oil on flax
+            <br> x  inch
+            <br><br>Titles:
+            <br>Birdy
+            <br><br><span style="color: #a9a9a9;"></span>
+            <br><br><em class='text-muted'>© Kilon</em>
+          </div>
+          <div class="image-caption">KWCe2</div>
+        </div>
+
+        <div class="pswp-gallery__item" data-category="KWCe"> <!--KWCe3-->
+          <a  
+            href="https://ia600601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCe/KWCe3.png" 
+            target="_blank"
+            data-pswp-width="2041"
+            data-pswp-height="2041"
+            data-pswp-tile-type="deepzoom"
+            data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
+            data-pswp-max-width="2041"
+            data-pswp-max-height="2041">
+            <img src="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCe/Thumbnail_KWCe3.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+          </a>
+          <div class="pswp-caption-content">
+            <b>KWCe3</b>
+            <br>oil on flax
+            <br> x  inch
+            <br><br>Titles:
+            <br>Birdy
+            <br><br><span style="color: #a9a9a9;"></span>
+            <br><br><em class='text-muted'>© Kilon</em>
+          </div>
+          <div class="image-caption">KWCe3</div>
+        </div>
+      <!-- #endregion KWCe -->
+    </div>
+      
+
+    <script type="module" src="./script/setup-photoswipe.js"> </script>
+    <script src="./script/setup-filter.js"></script>
 
   </body>
 </html>
