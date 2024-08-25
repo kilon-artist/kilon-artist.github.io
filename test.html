@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .container {
+            padding: 200px;
+            position: relative;
+            background-color: lightgray;
+        }
+        .elementA {
+            position: absolute;
+            width: 100px;
+            top: 0;
+            left: 0;
+            background-color: lightcoral;
+        }
+        .elementB {
+            position: relative;
+            background-color: lightblue;
+            /* Element B 的样式 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="elementA"></div>
+        <div class="elementB">Element B</div>
+    </div>
+    <script>
+        function setElementAHeight() {
+            const container = document.querySelector('.container');
+            const elementA = document.querySelector('.elementA');
+            const elementB = document.querySelector('.elementB');
+            
+            const containerTop = container.getBoundingClientRect().top;
+            const elementBTop = elementB.getBoundingClientRect().top;
+            const elementBBottom = elementB.getBoundingClientRect().bottom;
+            
+            const containerHeight = container.getBoundingClientRect().height;
+            
+            const height = elementBTop - containerTop;
+            elementA.style.height = `${height}px`;
+        }
+
+        window.addEventListener('load', setElementAHeight);
+        window.addEventListener('resize', setElementAHeight); // 如果容器或B元素的高度变化
+    </script>
+</body>
+</html>
