@@ -1,3 +1,4 @@
+//#region filter
 document.addEventListener('DOMContentLoaded', () => {
   const buttons = document.querySelectorAll('.button-group .button');
   const items = document.querySelectorAll('.pswp-gallery__item');
@@ -14,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     items.forEach(item => {
-      if (filterValue === '*' || item.matches(filterValue)) {
+      if (item.matches(filterValue)) {
         item.classList.add('zoom-in');
         item.style.display = ''; // 显示匹配的项
         item.style.opacity = '1'; // 逐渐显示匹配的项
@@ -37,43 +38,107 @@ document.addEventListener('DOMContentLoaded', () => {
       filterItems(filterValue);
     });
   });
+//#endregion
+
+//#region
+  buttons.forEach(button => {
+    button.addEventListener('click', function() {
+        // 移除所有按钮的 active 类
+        document.querySelectorAll('.button').forEach(btn => btn.classList.remove('active'));
+
+        // 为当前点击的按钮添加 active 类
+        this.classList.add('active');
+    });
+  });
 
   // 自动触发 KWCo 按钮的点击事件
   const defaultButton = document.querySelector(".button-group .button[data-filter=\"[data-category='KWCo']\"]");
   if (defaultButton) {
       defaultButton.click();
   }
-
 });
 
-document.querySelectorAll('.button').forEach(button => {
-  button.addEventListener('click', function() {
-      // 移除所有按钮的 active 类
-      document.querySelectorAll('.button').forEach(btn => btn.classList.remove('active'));
+  // Function to recalculate and set height
+  function recalculateLineHeights() {
+    document.querySelectorAll('.pswp-gallery__item').forEach(item => {
+      const thumbnail = item.querySelector('.thumbnail');
+      const lineLeft = item.querySelector('.line-left');
+      const lineRight = item.querySelector('.line-right');
 
-      // 为当前点击的按钮添加 active 类
-      this.classList.add('active');
+      if (thumbnail && lineLeft && lineRight) {
+        const itemTop = item.getBoundingClientRect().top;
+        const thumbnailTop = thumbnail.getBoundingClientRect().top;
+        const newHeight = thumbnailTop - itemTop;
+
+        lineLeft.style.height = `${newHeight}px`;
+        lineRight.style.height = `${newHeight}px`;
+      }
+    });
+  }
+
+  // Function to recalculate and set height
+  function recalculateLineHeights() {
+    // Create a promise to handle image load completion
+    const promises = [];
+
+    document.querySelectorAll('.pswp-gallery__item').forEach(item => {
+      const thumbnail = item.querySelector('.thumbnail');
+      const lineLeft = item.querySelector('.line-left');
+      const lineRight = item.querySelector('.line-right');
+
+      if (thumbnail && lineLeft && lineRight) {
+        // Create a promise for each image to ensure it's loaded
+        const imageLoadPromise = new Promise((resolve) => {
+          if (thumbnail.complete) {
+            // Image already loaded
+            resolve();
+          } else {
+            // Wait for image to load
+            thumbnail.addEventListener('load', resolve);
+            thumbnail.addEventListener('error', resolve); // Handle image load errors
+          }
+        });
+
+        promises.push(imageLoadPromise);
+
+        // Once the image is loaded, calculate the height
+        imageLoadPromise.then(() => {
+          const itemTop = item.getBoundingClientRect().top;
+          const thumbnailTop = thumbnail.getBoundingClientRect().top;
+          const newHeight = thumbnailTop - itemTop;
+
+          lineLeft.style.height = `${newHeight}px`;
+          lineRight.style.height = `${newHeight}px`;
+        });
+      }
+    });
+
+    // Wait for all image load promises to complete
+    return Promise.all(promises);
+  }
+
+  // Simulate Isotope filtering
+  function performFiltering() {
+    return new Promise(resolve => {
+      // Simulate filtering delay
+      setTimeout(() => {
+        // Your Isotope filtering code here
+        resolve();
+      }, 300); // Adjust delay as needed
+    });
+  }
+
+  // Attach event listeners to buttons
+  document.querySelectorAll('.button').forEach(button => {
+    button.addEventListener('click', async () => {
+      // Perform filtering and wait for it to complete
+      await performFiltering();
+
+      // Recalculate line heights after filtering
+      await recalculateLineHeights();
+    });
   });
-});
 
-document.querySelectorAll('.pswp-gallery__item').forEach(item => {
-  const thumbnail = item.querySelector('.thumbnail');
-  const lineLeft = item.querySelector('.line-left');
-  const lineRight = item.querySelector('.line-right');
-
-  const thumbnailTop = thumbnail.getBoundingClientRect().top;
-  const parentTop = item.getBoundingClientRect().top;
-
-  const lineHeight = thumbnailTop - parentTop - 5;
-
-  // 设置左右两侧的线条高度
-  if (lineLeft) {
-    lineLeft.style.height = `${lineHeight}px`;
-  }
-
-  if (lineRight) {
-    lineRight.style.height = `${lineHeight}px`;
-  }
-});
-
-
+  // Recalculate on page load
+  window.addEventListener('load', recalculateLineHeights);
+//#endregion
