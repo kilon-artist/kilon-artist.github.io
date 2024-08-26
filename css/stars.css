@@ -1,4 +1,8 @@
-
+html {
+    height: 100%;
+    overflow: hidden;
+    background: radial-gradient(ellipse at bottom, #0e141c 0%,#090a0f 100%);
+}
 
 #stars {
     width: 1px;
