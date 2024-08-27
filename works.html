@@ -9,7 +9,15 @@
     <link rel="stylesheet" href="css/stars.css">
 
     <style>
-      /* 缩放动画 */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;
+        font-size: 14px;
+        line-height: 20px;
+      }
+
+      /*#region zoomIn*/
       @keyframes zoomIn {
         from {
           transform: scale(0.3);
@@ -23,14 +31,9 @@
       .zoom-in {
         animation: zoomIn 0.5s forwards;
       }
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;
-        font-size: 14px;
-        line-height: 20px;
-      }
-
+      /*#endregion zoomIn*/
+      
+      /*#region grid*/
       .pswp-gallery__item {
         display: grid;
         place-items: center; /* 水平和垂直居中对齐 */
@@ -120,8 +123,6 @@
         outline: 4px solid rgb(232, 232, 232); /* 设置白色轮廓线，宽度为3px */
         outline-offset: 4px; /* 轮廓线的偏移量，让它居中 */
       }
-
-
       .image-caption {
         width: 100%; /* 小DIV的宽度 */
         font-size: 12px;
@@ -129,40 +130,82 @@
         text-align: center; /* 使字幕居中对齐 */
         padding-top: 20px; /* 上边距 */
       }
+      /*#endregion grid*/
+
+      /*#region button*/
       .button-group {
         margin: 20px auto;
         text-align: center;
       }
       .button {
-          width: 100px;
-          height: 30px;
-          color: white; /* 默认文本颜色 */
-          background-color: rgb(63, 63, 63); /* 默认背景为灰色 */
-          -webkit-mask-image: url('./img/brush-stroke.png'); /* 使用笔刷图像作为蒙版 */
-          mask-image: url('./img/brush-stroke.png');
-          mask-size: cover;
-          mask-position: center;
-          border: none;
-          outline: none;
-          cursor: pointer;
-          font-size: 14px; /* 调整字体大小以适应按钮尺寸 */
-          transition: all 0.3s ease-in-out;
-          display: inline-block;
-          text-align: center;
-          line-height: 30px; /* 行高调整为与按钮高度一致 */
-          background-blend-mode: multiply; /* 确保蒙版区域颜色正确显示 */
+        position: relative;
+        width: 100px;
+        height: 30px;
+        color: white; /* 默认文本颜色 */
+        background-color: rgb(63, 63, 63); /* 默认背景为灰色 */
+        -webkit-mask-image: url('./img/brush-stroke.png'); /* 使用笔刷图像作为蒙版 */
+        mask-image: url('./img/brush-stroke.png');
+        mask-size: cover;
+        mask-position: center;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        font-size: 14px; /* 调整字体大小以适应按钮尺寸 */
+        display: inline-block;
+        text-align: center;
+        line-height: 30px; /* 行高调整为与按钮高度一致 */
+        background-blend-mode: multiply; /* 确保蒙版区域颜色正确显示 */
       }
-      
-
-      .button:hover,
+      .button::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 100px;
+        height: 30px;
+        background-color: rgb(255, 255, 255); /* 默认背景为灰色 */
+        -webkit-mask-image: url('./img/brush-stroke.png'); /* 使用笔刷图像作为蒙版 */
+        mask-image: url('./img/brush-stroke.png');
+        mask-size: cover;
+        mask-position: center;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        font-size: 14px; /* 调整字体大小以适应按钮尺寸 */
+        display: inline-block;
+        text-align: center;
+        line-height: 30px; /* 行高调整为与按钮高度一致 */
+        mix-blend-mode: exclusion; /* 使用混合模式来调整颜色 */
+        transition: clip-path 0.2s ease-out;
+        clip-path: polygon(
+          0% 0%,
+          -0.5rem 0%,
+          0% 50%,
+          -0.5rem 100%,
+          0% 100%,
+          -0.5rem 50%
+        );
+      }
+      .button:not(.active):hover::before {
+        clip-path: polygon(
+          -0.5rem 0%,
+          100% 0%,
+          calc(100% + 0.5rem) 50%,
+          100% 100%,
+          -0.5rem 100%,
+          0% 50%
+        );
+      }
       .button.active {
           color: black; /* 悬停时文本颜色变黑 */
           background-color: rgb(210, 210, 210); /* 背景颜色为白色，但只在蒙版区域显示 */
           -webkit-mask-image: url('./img/brush-stroke.png'); /* 保持相同的蒙版 */
           mask-image: url('./img/brush-stroke.png');
+          z-index: 1;
       }
-      
-      
+      /*#endregion button*/
     </style>
   </head>
   <body>

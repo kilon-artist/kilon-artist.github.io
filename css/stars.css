@@ -1,7 +1,8 @@
 html {
-    height: 100%;
-    overflow: hidden;
-    background: radial-gradient(ellipse at bottom, #0e141c 0%,#090a0f 100%);
+    min-height: 100vh;
+    overflow-x: hidden; /* 保持水平滚动被隐藏 */
+    background: radial-gradient(ellipse at bottom, #0e141c 0%, #090a0f 100%);
+    
 }
 
 #stars {
