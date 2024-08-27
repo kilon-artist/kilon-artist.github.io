@@ -1,51 +1,40 @@
-//#region Function to recalculate and set height
-function recalculateLineHeights() {
-  // Create a promise to handle image load completion
-  const promises = [];
-
-  document.querySelectorAll('.pswp-gallery__item').forEach(item => {
-    const thumbnail = item.querySelector('.thumbnail');
-    const line = item.querySelector('.line');
-
-
-    if (thumbnail && line ) {
-      // Create a promise for each image to ensure it's loaded
-      const imageLoadPromise = new Promise((resolve) => {
-        if (thumbnail.complete) {
-          // Image already loaded
-          resolve();
-        } else {
-          // Wait for image to load
-          thumbnail.addEventListener('load', resolve);
-          thumbnail.addEventListener('error', resolve); // Handle image load errors
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Hover Effect</title>
+    <style>
+        .btn {
+            background-color: gray;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            transition: none; /* 初始状态下无过渡动画 */
         }
-      });
 
-      promises.push(imageLoadPromise);
+        .btn.hovered {
+            transition: background-color 0.3s ease, color 0.3s ease; /* 仅悬停时启用过渡动画 */
+            background-color: white;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <button class="btn">Hover me</button>
 
-      // Once the image is loaded, calculate the height
-      imageLoadPromise.then(() => {
-        const itemTop = item.getBoundingClientRect().top;
-        const thumbnailTop = thumbnail.getBoundingClientRect().top;
-        const newHeight = thumbnailTop - itemTop - 5;
+    <script>
+        const button = document.querySelector('.btn');
 
-        line.style.height = `${newHeight}px`;
-      });
-    }
-  });
+        button.addEventListener('mouseover', () => {
+            button.classList.add('hovered');
+        });
 
-  // Wait for all image load promises to complete
-  return Promise.all(promises);
-}
-
-// Simulate Isotope filtering
-function performFiltering() {
-  return new Promise(resolve => {
-    // Simulate filtering delay
-    setTimeout(() => {
-      // Your Isotope filtering code here
-      resolve();
-    }, 500); // Adjust delay as needed
-  });
-}
-//#endregion Function to recalculate and set height
+        button.addEventListener('mouseout', () => {
+            // 鼠标移出时立即移除过渡动画效果
+            button.classList.remove('hovered');
+        });
+    </script>
+</body>
+</html>

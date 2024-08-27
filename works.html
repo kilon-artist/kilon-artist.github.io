@@ -81,13 +81,6 @@
         );
       } 
       .pswp-gallery__item:hover .line.left{
-        left: 20%;
-        width: 3px;
-        background-color: rgb(124, 124, 124);
-        position: absolute;
-        top: 0;
-        z-index: -1;
-        transform: translateX(-50%); /* Align the line to the center */
         clip-path: polygon(
           0% 0%,
           100% 0%,
@@ -103,6 +96,7 @@
         top: 0;
         z-index: -1;
         transform: translateX(-50%); /* Align the line to the center */
+        transition: clip-path 0.3s ease-out;
         clip-path: polygon(
           0% 0%,
           100% 0%,
@@ -111,14 +105,6 @@
         );
       } 
       .pswp-gallery__item:hover .line.line.right{
-        left: 80%;
-        width: 3px;
-        background-color: rgb(124, 124, 124);
-        position: absolute;
-        top: 0;
-        z-index: -1;
-        transform: translateX(-50%); /* Align the line to the center */
-        transition: clip-path 0.3s ease-out;
         clip-path: polygon(
           0% 0%,
           100% 0%,

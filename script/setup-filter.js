@@ -73,6 +73,17 @@
   window.addEventListener('load', recalculateLineHeights);
 //#endregion
 
+const button = document.querySelector('.button');
+
+button.addEventListener('mouseover', () => {
+  button.classList.add('hovered');
+});
+
+button.addEventListener('mouseout', () => {
+  // 鼠标移出时立即移除过渡动画效果
+  button.classList.remove('hovered');
+});
+
 //#region Function to recalculate and set height
   function recalculateLineHeights() {
     // Create a promise to handle image load completion
