@@ -16,7 +16,7 @@
         font-size: 14px;
         line-height: 20px;
       }
-
+    
       /*#region zoomIn*/
       @keyframes zoomIn {
         from {
@@ -47,48 +47,85 @@
         position: relative; /* 使子元素能够绝对定位 */
         overflow: hidden; /* 隐藏超出容器的部分 */
       }
-      .pswp-gallery__item .trapezoid-left {
+      .trapezoid {
         position: absolute;
         top: 0;
+        width: 7px; /* 梯形的宽度 */
+        height: 0;
+        z-index: 1;
+        border-style: solid;
+        border-width: 4px 5px 0 5px; /* 上边宽度和下边高度 */
+        border-color: rgb(142, 142, 142) transparent transparent transparent; /* 顶部颜色，底部透明 */
+        transform: translateX(-50%); /* 向左移动梯形的50%宽度，以使其中心对齐 */
+      }
+      .trapezoid.left {
         left: 20%; /* 从左侧五分之一的位置 */
-        width: 7px; /* 梯形的宽度 */
-        height: 0;
-        z-index: 1;
-        border-style: solid;
-        border-width: 4px 5px 0 5px; /* 上边宽度和下边高度 */
-        border-color: rgb(142, 142, 142) transparent transparent transparent; /* 顶部颜色，底部透明 */
-        transform: translateX(-50%); /* 向左移动梯形的50%宽度，以使其中心对齐 */
       }
-      .pswp-gallery__item .trapezoid-right {
-        position: absolute;
-        top: 0;
+      .trapezoid.right {
         left: 80%; /* 从左侧五分之一的位置 */
-        width: 7px; /* 梯形的宽度 */
-        height: 0;
-        z-index: 1;
-        border-style: solid;
-        border-width: 4px 5px 0 5px; /* 上边宽度和下边高度 */
-        border-color: rgb(142, 142, 142) transparent transparent transparent; /* 顶部颜色，底部透明 */
-        transform: translateX(-50%); /* 向左移动梯形的50%宽度，以使其中心对齐 */
       }
-      .line-left {
+      .line.left {
+        left: 20%;
         width: 3px;
         background-color: rgb(124, 124, 124);
         position: absolute;
         top: 0;
-        left: 20%; /* Adjust this value to match the trapezoid's right edge */
         z-index: -1;
         transform: translateX(-50%); /* Align the line to the center */
+        transition: clip-path 0.3s ease-out;
+        clip-path: polygon(
+          0% 0%,
+          100% 0%,
+          0% -1px,
+          100% -1px
+        );
       } 
-      .line-right {
+      .pswp-gallery__item:hover .line.left{
+        left: 20%;
         width: 3px;
         background-color: rgb(124, 124, 124);
         position: absolute;
         top: 0;
-        left: 80%; /* Adjust this value to match the trapezoid's right edge */
         z-index: -1;
         transform: translateX(-50%); /* Align the line to the center */
+        clip-path: polygon(
+          0% 0%,
+          100% 0%,
+          100% 100%,
+          0% 100%
+        );
+      }
+      .line.right {
+        left: 80%;
+        width: 3px;
+        background-color: rgb(124, 124, 124);
+        position: absolute;
+        top: 0;
+        z-index: -1;
+        transform: translateX(-50%); /* Align the line to the center */
+        clip-path: polygon(
+          0% 0%,
+          100% 0%,
+          0% -1px,
+          100% -1px
+        );
       } 
+      .pswp-gallery__item:hover .line.line.right{
+        left: 80%;
+        width: 3px;
+        background-color: rgb(124, 124, 124);
+        position: absolute;
+        top: 0;
+        z-index: -1;
+        transform: translateX(-50%); /* Align the line to the center */
+        transition: clip-path 0.3s ease-out;
+        clip-path: polygon(
+          0% 0%,
+          100% 0%,
+          100% 100%,
+          0% 100%
+        );
+      }
       .pswp-gallery__item img {
         width: 100%;
         height: auto;
@@ -118,7 +155,7 @@
         aspect-ratio: attr(width) / attr(height); /* 保持原图的宽高比例 */
         transition: box-shadow 0.3s ease, outline-offset 0.3s ease;
       }
-      .thumbnail.hover-frame:hover {
+      .pswp-gallery__item:hover .thumbnail.hover-frame {
         box-shadow: 0 0 0 2px rgb(217, 217, 217); /* 悬停时显示3px的白色阴影 */
         outline: 4px solid rgb(232, 232, 232); /* 设置白色轮廓线，宽度为3px */
         outline-offset: 4px; /* 轮廓线的偏移量，让它居中 */
@@ -220,10 +257,10 @@
     <div class="pswp-gallery" id="gallery">
       <!-- #region KWCo -->	
         <div class="pswp-gallery__item" data-category="KWCo"> <!--KWCo1-->
-          <div class="trapezoid-left"></div>
-          <div class="trapezoid-right"></div>
-          <div class="line-left"></div>
-          <div class="line-right"></div>
+          <div class="trapezoid left"></div>
+          <div class="trapezoid right"></div>
+          <div class="line left"></div>
+          <div class="line right"></div>
           <a  
             href="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo1.jpg" 
             target="_blank"
@@ -248,10 +285,10 @@
         </div>
         
         <div class="pswp-gallery__item" data-category="KWCo"> <!--KWCo2-->
-          <div class="trapezoid-left"></div>
-          <div class="trapezoid-right"></div>
-          <div class="line-left"></div>
-          <div class="line-right"></div>
+          <div class="trapezoid left"></div>
+          <div class="trapezoid right"></div>
+          <div class="line left"></div>
+          <div class="line right"></div>
           <a  
             href="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo2.jpg" 
             target="_blank"
@@ -276,10 +313,10 @@
         </div>
 
         <div class="pswp-gallery__item" data-category="KWCo"> <!--KWCo3-->
-          <div class="trapezoid-left"></div>
-          <div class="trapezoid-right"></div>
-          <div class="line-left"></div>
-          <div class="line-right"></div>
+          <div class="trapezoid left"></div>
+          <div class="trapezoid right"></div>
+          <div class="line left"></div>
+          <div class="line right"></div>
           <a  
             href="https://ia600601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo3.jpg" 
             target="_blank"
@@ -306,10 +343,10 @@
 
       <!-- #region KWCs -->	
         <div class="pswp-gallery__item" data-category="KWCs"> <!--KWCs1-->
-          <div class="trapezoid-left"></div>
-          <div class="trapezoid-right"></div>
-          <div class="line-left"></div>
-          <div class="line-right"></div>
+          <div class="trapezoid left"></div>
+          <div class="trapezoid right"></div>
+          <div class="line left"></div>
+          <div class="line right"></div>
           <a  
             href="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCs/KWCs1.jpg" 
             target="_blank"
@@ -336,10 +373,10 @@
         </div>
         
         <div class="pswp-gallery__item" data-category="KWCs"> <!--KWCs2-->
-          <div class="trapezoid-left"></div>
-          <div class="trapezoid-right"></div>
-          <div class="line-left"></div>
-          <div class="line-right"></div>
+          <div class="trapezoid left"></div>
+          <div class="trapezoid right"></div>
+          <div class="line left"></div>
+          <div class="line right"></div>
           <a  
             href="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCs/KWCs2.jpg" 
             target="_blank"
@@ -366,10 +403,10 @@
         </div>
 
         <div class="pswp-gallery__item" data-category="KWCs"> <!--KWCs3-->
-          <div class="trapezoid-left"></div>
-          <div class="trapezoid-right"></div>
-          <div class="line-left"></div>
-          <div class="line-right"></div>
+          <div class="trapezoid left"></div>
+          <div class="trapezoid right"></div>
+          <div class="line left"></div>
+          <div class="line right"></div>
           <a  
             href="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCs/KWCs3.jpg" 
             target="_blank"
@@ -398,10 +435,10 @@
 
       <!-- #region KWCe -->	
         <div class="pswp-gallery__item" data-category="KWCe"> <!--KWCe1-->
-          <div class="trapezoid-left"></div>
-          <div class="trapezoid-right"></div>
-          <div class="line-left"></div>
-          <div class="line-right"></div>
+          <div class="trapezoid left"></div>
+          <div class="trapezoid right"></div>
+          <div class="line left"></div>
+          <div class="line right"></div>
           <a  
             href="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCe/KWCe1.png" 
             target="_blank"
@@ -428,10 +465,10 @@
         </div>
         
         <div class="pswp-gallery__item" data-category="KWCe"> <!--KWCe2-->
-          <div class="trapezoid-left"></div>
-          <div class="trapezoid-right"></div>
-          <div class="line-left"></div>
-          <div class="line-right"></div>
+          <div class="trapezoid left"></div>
+          <div class="trapezoid right"></div>
+          <div class="line left"></div>
+          <div class="line right"></div>
           <a  
             href="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCe/KWCe2.jpg" 
             target="_blank"
@@ -458,10 +495,10 @@
         </div>
 
         <div class="pswp-gallery__item" data-category="KWCe"> <!--KWCe3-->
-          <div class="trapezoid-left"></div>
-          <div class="trapezoid-right"></div>
-          <div class="line-left"></div>
-          <div class="line-right"></div>
+          <div class="trapezoid left"></div>
+          <div class="trapezoid right"></div>
+          <div class="line left"></div>
+          <div class="line right"></div>
           <a  
             href="https://ia600601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCe/KWCe3.png" 
             target="_blank"

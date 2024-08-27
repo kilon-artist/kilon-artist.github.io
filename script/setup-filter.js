@@ -80,8 +80,8 @@
 
     document.querySelectorAll('.pswp-gallery__item').forEach(item => {
       const thumbnail = item.querySelector('.thumbnail');
-      const lineLeft = item.querySelector('.line-left');
-      const lineRight = item.querySelector('.line-right');
+      const lineLeft = item.querySelector('.line.left');
+      const lineRight = item.querySelector('.line.right');
 
       if (thumbnail && lineLeft && lineRight) {
         // Create a promise for each image to ensure it's loaded
