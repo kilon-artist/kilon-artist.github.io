@@ -73,17 +73,6 @@
   window.addEventListener('load', recalculateLineHeights);
 //#endregion
 
-const button = document.querySelector('.button');
-
-button.addEventListener('mouseover', () => {
-  button.classList.add('hovered');
-});
-
-button.addEventListener('mouseout', () => {
-  // 鼠标移出时立即移除过渡动画效果
-  button.classList.remove('hovered');
-});
-
 //#region Function to recalculate and set height
   function recalculateLineHeights() {
     // Create a promise to handle image load completion
@@ -136,3 +125,31 @@ button.addEventListener('mouseout', () => {
     });
   }
 //#endregion Function to recalculate and set height
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const items = document.querySelectorAll('.pswp-gallery__item');
+
+  items.forEach(item => {
+      const img = item.querySelector('.thumbnail');
+      const overlay = item.querySelector('.loading-overlay');
+
+      if (img.complete) {
+          // 图片已经加载完成
+          overlay.style.display = 'none';
+          img.classList.add('loaded');
+      } else {
+          // 图片正在加载中
+          img.addEventListener('load', () => {
+              overlay.style.display = 'none';
+              img.classList.add('loaded');
+          });
+
+          img.addEventListener('error', () => {
+              // 图片加载出错的处理
+              overlay.textContent = 'Failed'; // 或者其他提示
+          });
+      }
+  });
+});

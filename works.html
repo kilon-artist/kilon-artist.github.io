@@ -52,10 +52,10 @@
         top: 0;
         width: 7px; /* 梯形的宽度 */
         height: 0;
-        z-index: 1;
+
         border-style: solid;
         border-width: 4px 5px 0 5px; /* 上边宽度和下边高度 */
-        border-color: rgb(142, 142, 142) transparent transparent transparent; /* 顶部颜色，底部透明 */
+        border-color: rgb(187, 187, 187) transparent transparent transparent; /* 顶部颜色，底部透明 */
         transform: translateX(-50%); /* 向左移动梯形的50%宽度，以使其中心对齐 */
       }
       .trapezoid.left {
@@ -134,14 +134,33 @@
         color: #fff;
         text-decoration: underline;
       }
+      .loading-container{
+        position: relative;
+      }
+      .loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('img/bg.gif');
+        background-position: center; /* 背景图像将居中显示 */
+        background-repeat: repeat; /* 背景图像将会重复 */
+        background-color: rgb(11, 14, 24);
+        background-blend-mode: lighten; /* 设置混合模式 */
+        }
       .thumbnail{
         width: 100%;
         height: auto; 
         max-height: 400px;
         aspect-ratio: attr(width) / attr(height); /* 保持原图的宽高比例 */
-        transition: box-shadow 0.3s ease, outline-offset 0.3s ease;
+        opacity: 0; /* 初始状态为透明 */
+        transition: box-shadow 0.3s ease, outline-offset 0.3s ease, opacity 1s ease-in-out;
       }
-      .pswp-gallery__item:hover .thumbnail.hover-frame {
+      .thumbnail.loaded {
+          opacity: 1; /* 加载完成后变为不透明 */
+      }
+      .pswp-gallery__item:hover .thumbnail {
         box-shadow: 0 0 0 2px rgb(217, 217, 217); /* 悬停时显示3px的白色阴影 */
         outline: 4px solid rgb(232, 232, 232); /* 设置白色轮廓线，宽度为3px */
         outline-offset: 4px; /* 轮廓线的偏移量，让它居中 */
@@ -255,8 +274,14 @@
             data-pswp-tile-type="deepzoom"
             data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
             data-pswp-max-width="2709"
-            data-pswp-max-height="3744">
-            <img src="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCo/Thumbnail_KWCo1.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+            data-pswp-max-height="3744"
+            class="loading-container">
+            <div class="loading-overlay"></div>
+            <img
+              src="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCo/Thumbnail_KWCo1.jpg" 
+              itemprop="thumbnail" 
+              alt="KWCo1" 
+              class="thumbnail" />
           </a>
           <div class="pswp-caption-content">
             <b>KWCo1 (2022)</b>
@@ -283,8 +308,14 @@
             data-pswp-tile-type="deepzoom"
             data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
             data-pswp-max-width="2871"
-            data-pswp-max-height="3451">
-            <img src="https://ia600601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCo/Thumbnail_KWCo2.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+            data-pswp-max-height="3451"
+            class="loading-container">
+            <div class="loading-overlay"></div>
+            <img 
+              src="https://ia600601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCo/Thumbnail_KWCo2.jpg" 
+              itemprop="thumbnail" 
+              alt="KWCo1" 
+              class="thumbnail" />
           </a>
           <div class="pswp-caption-content">
             <b>KWCo2 (2022)</b>
@@ -311,8 +342,14 @@
             data-pswp-tile-type="deepzoom"
             data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
             data-pswp-max-width="4000"
-            data-pswp-max-height="2979">
-            <img src="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCo/Thumbnail_KWCo3.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+            data-pswp-max-height="2979"
+            class="loading-container">
+            <div class="loading-overlay"></div>
+            <img 
+              src="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCo/Thumbnail_KWCo3.jpg" 
+              itemprop="thumbnail" 
+              alt="KWCo1" 
+              class="thumbnail" />
           </a>
           <div class="pswp-caption-content">
             <b>KWCo3 (2023)</b>
@@ -341,8 +378,14 @@
             data-pswp-tile-type="deepzoom"
             data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
             data-pswp-max-width="3000"
-            data-pswp-max-height="4000">
-            <img src="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCs/Thumbnail_KWCs1.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+            data-pswp-max-height="4000"
+            class="loading-container">
+            <div class="loading-overlay"></div>
+            <img 
+              src="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCs/Thumbnail_KWCs1.jpg" 
+              itemprop="thumbnail" 
+              alt="KWCo1" 
+              class="thumbnail" />
           </a>
           <div class="pswp-caption-content">
             <span style="font-family: 'Shantell Sans', sans-serif;">
@@ -371,8 +414,14 @@
             data-pswp-tile-type="deepzoom"
             data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
             data-pswp-max-width="3000"
-            data-pswp-max-height="4000">
-            <img src="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCs/Thumbnail_KWCs2.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+            data-pswp-max-height="4000"
+            class="loading-container">
+            <div class="loading-overlay"></div>
+            <img 
+              src="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCs/Thumbnail_KWCs2.jpg" 
+              itemprop="thumbnail" 
+              alt="KWCo1" 
+              class="thumbnail" />
           </a>
           <div class="pswp-caption-content">
             <span style="font-family: 'Shantell Sans', sans-serif;">
@@ -401,8 +450,14 @@
             data-pswp-tile-type="deepzoom"
             data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
             data-pswp-max-width="3999"
-            data-pswp-max-height="3000">
-            <img src="https://ia600601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCs/Thumbnail_KWCs3.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+            data-pswp-max-height="3000"
+            class="loading-container">
+            <div class="loading-overlay"></div>
+            <img 
+            src="https://ia600601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCs/Thumbnail_KWCs3.jpg" 
+            itemprop="thumbnail" 
+            alt="KWCo1" 
+            class="thumbnail" />
           </a>
           <div class="pswp-caption-content">
             <span style="font-family: 'Shantell Sans', sans-serif;">
@@ -433,8 +488,14 @@
             data-pswp-tile-type="deepzoom"
             data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
             data-pswp-max-width="4022"
-            data-pswp-max-height="2642">
-            <img src="https://ia600601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCe/Thumbnail_KWCe1.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+            data-pswp-max-height="2642"
+            class="loading-container">
+            <div class="loading-overlay"></div>
+            <img 
+              src="https://ia600601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCe/Thumbnail_KWCe1.jpg" 
+              itemprop="thumbnail" 
+              alt="KWCo1" 
+              class="thumbnail" />
           </a>
           <div class="pswp-caption-content">
             <span style="font-family: 'SF Pixelate'; color: greenyellow;">
@@ -463,8 +524,14 @@
             data-pswp-tile-type="deepzoom"
             data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
             data-pswp-max-width="2035"
-            data-pswp-max-height="1601">
-            <img src="https://ia600601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCe/Thumbnail_KWCe2.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+            data-pswp-max-height="1601"
+            class="loading-container">
+            <div class="loading-overlay"></div>
+            <img 
+              src="https://ia600601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCe/Thumbnail_KWCe2.jpg" 
+              itemprop="thumbnail" 
+              alt="KWCo1" 
+              class="thumbnail" />
           </a>
           <div class="pswp-caption-content">
             <span style="font-family: 'SF Pixelate'; color: greenyellow;">
@@ -493,8 +560,13 @@
             data-pswp-tile-type="deepzoom"
             data-pswp-tile-url="path/to/tiles/{z}/{x}_{y}.jpeg"
             data-pswp-max-width="2041"
-            data-pswp-max-height="2041">
-            <img src="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCe/Thumbnail_KWCe3.jpg" itemprop="thumbnail" alt="KWCo1" class="thumbnail hover-frame" />
+            data-pswp-max-height="2041"
+            class="loading-container">
+            <div class="loading-overlay"></div>
+            <img src="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/Thumbnails/Thumbnails_KWCe/Thumbnail_KWCe3.jpg" 
+            itemprop="thumbnail" 
+            alt="KWCo1" 
+            class="thumbnail" />
           </a>
           <div class="pswp-caption-content">
             <span style="font-family: 'SF Pixelate'; color: greenyellow;">
@@ -515,5 +587,6 @@
 
     <script type="module" src="./script/setup-photoswipe.js"> </script>
     <script src="./script/setup-filter.js"></script>
+
   </body>
 </html>

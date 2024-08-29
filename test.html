@@ -3,37 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Button Hover Effect</title>
+    <title>Image Loader Example</title>
     <style>
-        .btn {
-            background-color: gray;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            transition: none; /* 初始状态下无过渡动画 */
+        .pswp-gallery__item {
+            position: relative;
+            width: 300px; /* 根据需要调整宽度 */
+            height: 200px; /* 根据需要调整高度 */
         }
 
-        .btn.hovered {
-            transition: background-color 0.3s ease, color 0.3s ease; /* 仅悬停时启用过渡动画 */
-            background-color: white;
-            color: black;
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: gray; /* 灰色背景 */
+            color: white; /* 加载中文字颜色 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            z-index: 10; /* 确保覆盖在图片上方 */
+            text-align: center;
+        }
+
+        .thumbnail {
+            display: block;
+            width: 100%; /* 确保图片适应父元素 */
+            height: auto;
+            
         }
     </style>
 </head>
 <body>
-    <button class="btn">Hover me</button>
+    <div class="pswp-gallery__item">
+        <div class="A"></div>
+        <a href="">
+            <div class="loading-overlay">加载中...</div>
+            <img src="https://ia800601.us.archive.org/32/items/kilonworkscatalog/KWC%20%28Kilon%20Works%20Catalogue%29/KWCo/KWCo1.jpg" alt="" class="thumbnail">
+        </a>
+        <div class="B">KWCo1</div>
+    </div>
 
     <script>
-        const button = document.querySelector('.btn');
+        document.addEventListener('DOMContentLoaded', () => {
+            const items = document.querySelectorAll('.pswp-gallery__item');
 
-        button.addEventListener('mouseover', () => {
-            button.classList.add('hovered');
-        });
+            items.forEach(item => {
+                const img = item.querySelector('.thumbnail');
+                const overlay = item.querySelector('.loading-overlay');
 
-        button.addEventListener('mouseout', () => {
-            // 鼠标移出时立即移除过渡动画效果
-            button.classList.remove('hovered');
+                if (img.complete) {
+                    // 图片已经加载完成
+                    overlay.style.display = 'none';
+                } else {
+                    // 图片正在加载中
+                    img.addEventListener('load', () => {
+                        overlay.style.display = 'none';
+                    });
+
+                    img.addEventListener('error', () => {
+                        // 图片加载出错的处理
+                        overlay.textContent = '加载失败'; // 或者其他提示
+                    });
+                }
+            });
         });
     </script>
 </body>
