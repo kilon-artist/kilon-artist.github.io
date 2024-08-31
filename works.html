@@ -16,8 +16,24 @@
         font-size: 14px;
         line-height: 20px;
       }
-    
-      /*#region zoomIn*/
+
+      ::-webkit-scrollbar {
+        width: 0.3em;
+      }
+
+      ::-webkit-scrollbar-track {
+        background-color: #06070e;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background-color: rgb(97, 97, 97);
+        border-radius: 100vw;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background-color: rgb(165, 165, 165);
+      }
+      /*#region animation*/
       @keyframes zoomIn {
         from {
           transform: scale(0.3);
@@ -31,7 +47,7 @@
       .zoom-in {
         animation: zoomIn 0.5s forwards;
       }
-      /*#endregion zoomIn*/
+      /*#endregion animation*/
       
       /*#region grid*/
       .pswp-gallery__item {
@@ -179,7 +195,7 @@
         margin: 20px auto;
         text-align: center;
       }
-      .button {
+      .button.filter {
         position: relative;
         width: 100px;
         height: 30px;
@@ -198,7 +214,7 @@
         line-height: 30px; /* 行高调整为与按钮高度一致 */
         background-blend-mode: multiply; /* 确保蒙版区域颜色正确显示 */
       }
-      .button::before {
+      .button.filter::before {
         content: '';
         position: absolute;
         left: 0;
@@ -230,7 +246,7 @@
           -0.5rem 50%
         );
       }
-      .button:not(.active):hover::before {
+      .button.filter:not(.active):hover::before {
         clip-path: polygon(
           -0.5rem 0%,
           100% 0%,
@@ -240,12 +256,52 @@
           0% 50%
         );
       }
-      .button.active {
+      .button.filter.active {
           color: black; /* 悬停时文本颜色变黑 */
           background-color: rgb(210, 210, 210); /* 背景颜色为白色，但只在蒙版区域显示 */
           -webkit-mask-image: url('./img/brush-stroke.png'); /* 保持相同的蒙版 */
           mask-image: url('./img/brush-stroke.png');
           z-index: 1;
+      }
+      .button.sorter {
+        position: relative;
+        width: 100px;
+        height: 30px;
+        color: white;
+        background-color: white;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        font-size: 14px;
+        display: inline-block;
+        text-align: center;
+        line-height: 30px;
+        background-blend-mode: multiply;
+      }
+      .button.sorter .sort-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        opacity: 0.5;
+      }
+      .button.sorter .sort-icon.ascending {
+        background-image: url('img/ascending.svg'); /* Add your ascending icon URL */
+      }
+      .button.sorter .sort-icon.descending {
+        background-image: url('img/descending.svg'); /* Add your descending icon URL */
+        display: none; /* Initially hide the descending icon */
+      }
+      .button.sorter.active .sort-icon.ascending {
+        display: none; /* Hide ascending icon when descending order is active */
+      }
+      .button.sorter.active .sort-icon.descending {
+        display: block; /* Show descending icon when descending order is active */
       }
       /*#endregion button*/
     </style>
@@ -255,13 +311,18 @@
     <div id="stars2"></div>
     <div id="stars3"></div>
     <div class="button-group filters-button-group">
-      <button class="button" data-filter="[data-category='KWCo']"><b>KWCo</b></button>
-      <button class="button" data-filter="[data-category='KWCs']"><span style="font-family: 'Shantell Sans', sans-serif;"><b>KWCs</b></span></button>
-      <button class="button" data-filter="[data-category='KWCe']"><span style="font-family: 'SF Pixelate', sans-serif;"><b>KWCe</b></span></button>
+      <button class="button filter" data-filter="[data-category='KWCo']"><b>KWCo</b></button>
+      <button class="button filter" data-filter="[data-category='KWCs']"><span style="font-family: 'Shantell Sans', sans-serif;"><b>KWCs</b></span></button>
+      <button class="button filter" data-filter="[data-category='KWCe']"><span style="font-family: 'SF Pixelate', sans-serif;"><b>KWCe</b></span></button>
+      <button class="button sorter" aria-label="Sort">
+        <span class="sort-icon ascending" aria-hidden="true"></span>
+        <span class="sort-icon descending" aria-hidden="true"></span>
+        Sorter
+      </button>
     </div>
     <div class="pswp-gallery" id="gallery">
       <!-- #region KWCo -->	
-        <div class="pswp-gallery__item" data-category="KWCo"> <!--KWCo1-->
+        <div class="pswp-gallery__item" data-category="KWCo" data-order="1"> <!--KWCo1-->
           <div class="trapezoid left"></div>
           <div class="trapezoid right"></div>
           <div class="line left"></div>
@@ -298,7 +359,7 @@
           <div class="image-caption">KWCo1</div>
         </div>
         
-        <div class="pswp-gallery__item" data-category="KWCo"> <!--KWCo2-->
+        <div class="pswp-gallery__item" data-category="KWCo" data-order="2"> <!--KWCo2-->
           <div class="trapezoid left"></div>
           <div class="trapezoid right"></div>
           <div class="line left"></div>
@@ -333,7 +394,7 @@
           <div class="image-caption">KWCo2</div>
         </div>
 
-        <div class="pswp-gallery__item" data-category="KWCo"> <!--KWCo3-->
+        <div class="pswp-gallery__item" data-category="KWCo" data-order="3"> <!--KWCo3-->
           <div class="trapezoid left"></div>
           <div class="trapezoid right"></div>
           <div class="line left"></div>
@@ -370,7 +431,7 @@
       <!-- #endregion KWCo -->
 
       <!-- #region KWCs -->	
-        <div class="pswp-gallery__item" data-category="KWCs"> <!--KWCs1-->
+        <div class="pswp-gallery__item" data-category="KWCs" data-order="1"> <!--KWCs1-->
           <div class="trapezoid left"></div>
           <div class="trapezoid right"></div>
           <div class="line left"></div>
@@ -407,7 +468,7 @@
           <div class="image-caption"><span style="font-family: 'Shantell Sans', sans-serif;">KWCs1</span></div>
         </div>
         
-        <div class="pswp-gallery__item" data-category="KWCs"> <!--KWCs2-->
+        <div class="pswp-gallery__item" data-category="KWCs" data-order="2"> <!--KWCs2-->
           <div class="trapezoid left"></div>
           <div class="trapezoid right"></div>
           <div class="line left"></div>
@@ -444,7 +505,7 @@
           <div class="image-caption"><span style="font-family: 'Shantell Sans', sans-serif;">KWCs2</span></div>
         </div>
 
-        <div class="pswp-gallery__item" data-category="KWCs"> <!--KWCs3-->
+        <div class="pswp-gallery__item" data-category="KWCs" data-order="3"> <!--KWCs3-->
           <div class="trapezoid left"></div>
           <div class="trapezoid right"></div>
           <div class="line left"></div>
@@ -483,7 +544,7 @@
       <!-- #endregion KWCs -->
 
       <!-- #region KWCe -->	
-        <div class="pswp-gallery__item" data-category="KWCe"> <!--KWCe1-->
+        <div class="pswp-gallery__item" data-category="KWCe" data-order="1"> <!--KWCe1-->
           <div class="trapezoid left"></div>
           <div class="trapezoid right"></div>
           <div class="line left"></div>
@@ -520,7 +581,7 @@
           <div class="image-caption"><span style="font-family: 'SF Pixelate';">KWCe1</span></div>
         </div>
         
-        <div class="pswp-gallery__item" data-category="KWCe"> <!--KWCe2-->
+        <div class="pswp-gallery__item" data-category="KWCe" data-order="2"> <!--KWCe2-->
           <div class="trapezoid left"></div>
           <div class="trapezoid right"></div>
           <div class="line left"></div>
@@ -557,7 +618,7 @@
           <div class="image-caption"><span style="font-family: 'SF Pixelate';">KWCe2</span></div>
         </div>
 
-        <div class="pswp-gallery__item" data-category="KWCe"> <!--KWCe3-->
+        <div class="pswp-gallery__item" data-category="KWCe" data-order="3"> <!--KWCe3-->
           <div class="trapezoid left"></div>
           <div class="trapezoid right"></div>
           <div class="line left"></div>
@@ -598,29 +659,8 @@
       
 
     <script type="module" src="./script/setup-photoswipe.js"> </script>
-    <script src="./script/setup-filter.js"></script>
-    <script>
-
-      if ('loading' in HTMLImageElement.prototype) {
-          //Native Lazy Loading Supported!
-
-          console.log('yay!')
-
-          const images = document.querySelectorAll('img[loading="lazy"]')
-          images.forEach(img => {
-              img.src = img.dataset.src;
-          })
-      }
-
-      else {
-        // Not Supported!
-
-        console.log('boo!')
-
-        const script = document.createElement('script')
-        script.src = 'script/lazysizes.min.js'
-        document.body.appendChild(script);
-      }
-    </script>
+    <script src="script/setup-filter.js"></script>
+    <script src="script/setup-lazyload.js"></script>  
+    <script src="script/setup-sorter.js"></script>  
   </body>
 </html>

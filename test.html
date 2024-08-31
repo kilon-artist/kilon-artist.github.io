@@ -1,12 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OverlayScrollbars Example</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.0.0-beta.2/css/OverlayScrollbars.min.css">
+    <style>
+        #scrollable-content {
+            height: 300px;
+            width: 400px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
 <body>
-    <div class="pswp-gallery">
-        <div class="pswp-gallery__item">
-            <div class="A"></div>
-            <a href="" class="loading-container">
-                <div class="loading-overlay"></div>
-                <img src="" alt="" class="thumbnail">
-            </a>
-            <div class="B"></div>
-        </div>
+    <div id="scrollable-content">
+        <p>Content goes here...</p>
+        <!-- Add enough content to make the container scrollable -->
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.0.0-beta.2/js/OverlayScrollbars.min.js"></script>
+    <script>
+        OverlayScrollbars(document.getElementById('scrollable-content'), {
+            className: "os-theme-round-dark",
+            scrollbars: {
+                autoHide: 'leave',
+                clickScrolling: true,
+            }
+        });
+    </script>
 </body>
+</html>
