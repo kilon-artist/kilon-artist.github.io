@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-overlayscrollbars-initialize>
   <head>
     <meta name="viewport" content="width=device-width"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.3.0/dist/photoswipe.css">
@@ -7,8 +7,12 @@
     <link href="https://fonts.cdnfonts.com/css/sf-pixelate" rel="stylesheet">
     <link href="https://fonts.cdnfonts.com/css/shantell-sans" rel="stylesheet">  
     <link rel="stylesheet" href="css/stars.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/2.10.0/styles/overlayscrollbars.css">
 
     <style>
+      *{
+        scroll-behavior: smooth;
+      }
       body {
         margin: 0;
         padding: 0;
@@ -16,22 +20,26 @@
         font-size: 14px;
         line-height: 20px;
       }
-
-      ::-webkit-scrollbar {
-        width: 0.3em;
+      .os-theme-light {
+        --os-size: 7px;
+        --os-handle-bg: hsl(0 0% 50% / 0.5);
+        transition: ease 0.5s;
       }
-
-      ::-webkit-scrollbar-track {
-        background-color: #06070e;
+      .scrolltop{
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        padding: 10px 15px;
+        background-color: #000;
+        color: #fff;
+        border-radius: 5px;
+        border-radius: 1px solid #fff;
+        cursor: pointer;
+        transition: all 0.5s ease 0s;
       }
-      
-      ::-webkit-scrollbar-thumb {
-        background-color: rgb(97, 97, 97);
-        border-radius: 100vw;
-      }
-
-      ::-webkit-scrollbar-thumb:hover {
-        background-color: rgb(165, 165, 165);
+      .scrolltop:hover {
+        background-color: #f7f7f7;
+        color: #000;
       }
       /*#region animation*/
       @keyframes zoomIn {
@@ -306,7 +314,7 @@
       /*#endregion button*/
     </style>
   </head>
-  <body>
+  <body data-overlayscrollbars-initialize>
     <div id="stars"></div>
     <div id="stars2"></div>
     <div id="stars3"></div>
@@ -658,9 +666,19 @@
     </div>
       
 
+    <div onclick="ScrollToTop()" class="scrolltop">Top</div>
+    <script>
+      function ScrollToTop(){
+        window.scrollTo(0, 0);
+      }
+    </script>
+
     <script type="module" src="./script/setup-photoswipe.js"> </script>
     <script src="script/setup-filter.js"></script>
     <script src="script/setup-lazyload.js"></script>  
     <script src="script/setup-sorter.js"></script>  
+    <script src="script\setup-overlayscrollbars.js"></script>
+
+    
   </body>
 </html>
