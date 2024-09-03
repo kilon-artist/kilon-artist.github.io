@@ -35,22 +35,6 @@
         --os-handle-bg: hsl(248, 14%, 23%);
         transition: ease 0.5s;
       }
-      .scrolltop{
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        padding: 10px 15px;
-        background-color: #000;
-        color: #fff;
-        border-radius: 5px;
-        border-radius: 1px solid #fff;
-        cursor: pointer;
-        transition: all 0.5s ease 0s;
-      }
-      .scrolltop:hover {
-        background-color: #f7f7f7;
-        color: #000;
-      }
       /*#endregion html*/
       
       /*#region animation*/
@@ -81,7 +65,20 @@
         position: relative; /* 使子元素能够绝对定位 */
         overflow: clip;
       }
-
+      .pswp-gallery__item::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        width: 0%;
+        height: 1.2px;
+        background-color: #818181;
+        transition: width 0.2s ease;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .pswp-gallery__item:hover::after{
+        width: 80%;
+      }
       .trapezoid {
       position: absolute;
       top: 0;
@@ -230,6 +227,7 @@
         aspect-ratio: attr(width) / attr(height); /* 保持原图的宽高比例 */
         opacity: 0; /* 初始状态为透明 */
         transition: box-shadow 0.3s ease, outline-offset 0.3s ease, opacity 1s ease-in-out;
+        margin-bottom: 20px;
       }
       .thumbnail.loaded {
           opacity: 1; /* 加载完成后变为不透明 */
@@ -240,11 +238,28 @@
         outline-offset: 4px; /* 轮廓线的偏移量，让它居中 */
       }
       .image-caption {
+        position: relative;
         width: 100%; /* 小DIV的宽度 */
         font-size: 12px;
         color: #888888;
-        text-align: center; /* 使字幕居中对齐 */
-        padding-top: 20px; /* 上边距 */
+        text-align: center; /* 使字幕居中对齐 */  
+      }
+      .image-caption::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 0%;
+        height: 0.5px;
+        background-color: #818181;
+        transition: width 0.2s ease;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .pswp-gallery__item:hover .image-caption::after {
+        width: 40%;
+      }
+      .pswp-gallery__item:hover .image-caption {
+        color: #c6c6c6;
       }
       /*#endregion grid*/
 
@@ -322,11 +337,12 @@
           z-index: 1;
       }
       .button.sorter {
-        position: relative;
-        width: 100px;
+        position: fixed;
+        width: 30px;
         height: 30px;
-        color: white;
-        background-color: white;
+        bottom: 15%;
+        right: 2%;
+        background-color: transparent;
         border: none;
         outline: none;
         cursor: pointer;
@@ -341,18 +357,25 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        border-radius: 5px;
         width: 100%;
         height: 100%;
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
-        opacity: 0.5;
+        filter: invert(100%);
+        opacity: 0.8;
+        transition: filter 0.5s ease 0s; /* Smooth transition */
+      }
+      .button.sorter:hover .sort-icon{
+        filter: invert(0%);
+        background-color: #fff;
       }
       .button.sorter .sort-icon.ascending {
-        background-image: url('img/ascending.svg'); /* Add your ascending icon URL */
+        background-image: url('img/Ascending.png'); /* Add your ascending icon URL */
       }
       .button.sorter .sort-icon.descending {
-        background-image: url('img/descending.svg'); /* Add your descending icon URL */
+        background-image: url('img/Descending.png'); /* Add your descending icon URL */
         display: none; /* Initially hide the descending icon */
       }
       .button.sorter.active .sort-icon.ascending {
@@ -361,19 +384,41 @@
       .button.sorter.active .sort-icon.descending {
         display: block; /* Show descending icon when descending order is active */
       }
+      .scrolltop{
+        position: fixed;
+        bottom: 10%;
+        right: 2%;
+        padding: 10px 15px;
+        background-color: #000;
+        border-radius: 5px;
+        border-radius: 1px solid #fff;
+        cursor: pointer;
+        transition: all 0.5s ease 0s;
+        background-image: url('img/ScrolltoTop.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        opacity: 0.5;
+      }
+      .scrolltop:hover {
+        background-color: #f7f7f7;
+        background-image: url('img/ScrolltoToTopHover.gif');
+        opacity: 0.8;
+      }
       /*#endregion button*/
     </style>
   </head>
   <body data-overlayscrollbars-initialize>
     <canvas id="starCanvas"></canvas>
     <div class="button-group filters-button-group">
-      <button class="button filter" data-filter="[data-category='KWCo']"><b>KWCo</b></button>
-      <button class="button filter" data-filter="[data-category='KWCs']"><span style="font-family: 'Shantell Sans', sans-serif;"><b>KWCs</b></span></button>
-      <button class="button filter" data-filter="[data-category='KWCe']"><span style="font-family: 'SF Pixelate', sans-serif;"><b>KWCe</b></span></button>
-      <button class="button sorter" aria-label="Sort">
-        <span class="sort-icon ascending" aria-hidden="true"></span>
-        <span class="sort-icon descending" aria-hidden="true"></span>
-        Sorter
+      <button class="button filter" data-filter="[data-category='KWCo']">
+        <b>KWCo</b>
+      </button>
+      <button class="button filter" data-filter="[data-category='KWCs']">
+        <span style="font-family: 'Shantell Sans', sans-serif;"><b>KWCs</b></span>
+      </button>
+      <button class="button filter" data-filter="[data-category='KWCe']">
+        <span style="font-family: 'SF Pixelate', sans-serif;"><b>KWCe</b></span>
       </button>
     </div>
     <div class="pswp-gallery" id="gallery">
@@ -638,7 +683,7 @@
               class="thumbnail" />
           </a>
           <div class="pswp-caption-content">
-            <span style="font-family: 'SF Pixelate'; color: greenyellow;">
+            <span style="font-family: 'SF Pixelate'; color: rgb(47, 255, 54);">
               <b>KWCe1</b>
               <br>
               <br> x  inch
@@ -677,7 +722,7 @@
               class="thumbnail" />
           </a>
           <div class="pswp-caption-content">
-            <span style="font-family: 'SF Pixelate'; color: greenyellow;">
+            <span style="font-family: 'SF Pixelate'; color: rgb(47, 255, 54);">
               <b>KWCe2</b>
               <br>oil on flax
               <br> x  inch
@@ -716,7 +761,7 @@
               class="thumbnail" />
           </a>
           <div class="pswp-caption-content">
-            <span style="font-family: 'SF Pixelate'; color: greenyellow;">
+            <span style="font-family: 'SF Pixelate'; color: rgb(47, 255, 54);">
               <b>KWCe3</b>
               <br>oil on flax
               <br> x  inch
@@ -730,14 +775,19 @@
         </div>
       <!-- #endregion KWCe -->
     </div>
-      
-
-    <div onclick="ScrollToTop()" class="scrolltop">Top</div>
+    
+  <!-- #region auxiliary buttons -->	
+    <button class="button sorter" aria-label="Sort">
+      <span class="sort-icon ascending" aria-hidden="true"></span>
+      <span class="sort-icon descending" aria-hidden="true"></span>
+    </button>
+    <div onclick="ScrollToTop()" class="scrolltop"></div>
     <script>
       function ScrollToTop(){
         window.scrollTo(0, 0);
       }
     </script>
+  <!-- #endregion auxiliary buttons -->	
     
     <script src="script\setup-starrysky.js"></script>
     <script type="module" src="./script/setup-photoswipe.js"> </script>
