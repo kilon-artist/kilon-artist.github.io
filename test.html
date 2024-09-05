@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Ceramic Background</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .ceramic-background {
+      width: 100vw;
+      height: 100vh;
+      background-color: orange;
+      background-size: cover;
+      position: relative;
+      overflow: hidden;
+      /* 添加高光反射和阴影效果，模拟陶瓷质感 */
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1)) 0 0 / 200% 200%, /* 高光效果 */
+                  radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent) 50% 50% / cover, /* 光滑反射 */
+                  linear-gradient(135deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)) 0 0 / 100% 100%; /* 陶瓷表面的微弱阴影 */
+    }
+
+    /* 陶瓷纹理 */
+    .ceramic-background::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://www.transparenttextures.com/patterns/asfalt-light.png'); /* 可以换成更细腻的纹理图像 */
+      opacity: 0.3;
+      mix-blend-mode: overlay;
+    }
+
+    /* 陶瓷反射和光泽 */
+    .ceramic-background::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5), transparent 70%);
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+
+<div class="ceramic-background"></div>
+
+<script>
+  // 生成随机的橙红色背景
+  function getRandomOrangeRedColor() {
+    const r = Math.floor(Math.random() * 50 + 200); // 红色值 200-250 之间
+    const g = Math.floor(Math.random() * 80);       // 绿色值 0-80 之间
+    const b = Math.floor(Math.random() * 50);       // 蓝色值 0-50 之间
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+
+  const ceramicBg = document.querySelector('.ceramic-background');
+  ceramicBg.style.backgroundColor = getRandomOrangeRedColor();
+</script>
+
+</body>
+</html>
